@@ -21,7 +21,11 @@
 
     // variables for the entire app
     let player = { x: 100, y: c.height / 2, direction: "d" }; // d = down u = up to save space
-    console.log(c.height);
+
+    const seed = (
+      Math.random() * (100000000 - 999999999) +
+      999999999
+    ).toString();
     let map = { x: 400 };
     let mouseDown = false;
     let gameOver = false;
