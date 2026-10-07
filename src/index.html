@@ -12,6 +12,7 @@
 
     // variables for the entire app
     let player = { x: 100, y: 100, direction: "d" }; // d = down u = up to save space
+    let map = { x: 400 };
     let mouseDown = false;
 
     document.addEventListener("mousedown", () => {
@@ -31,17 +32,19 @@
       } else {
         player.y -= 1;
       }
+      map.x -= 2;
     }
 
     function draw(time) {
+      // draw sprite
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, c.width, c.height);
       // debug: draw red dots
-      ctx.fillStyle = "red";
+      /*ctx.fillStyle = "red";
       ctx.beginPath();
       ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
       ctx.fill();
-      ctx.stroke();
+      ctx.stroke();*/
 
       ctx.fillStyle = "white";
       ctx.beginPath();
@@ -56,6 +59,9 @@
       }
 
       ctx.fill();
+      ctx.fillStyle = "green";
+      // draw map
+      ctx.fillRect(map.x, 0, 200, 200);
     }
 
     onresize = () => {
