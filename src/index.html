@@ -15,14 +15,18 @@
 
     function update(dt) {
       // move 50 pixels every second, and wrap around at the edge
-      player.x = (player.x + 50 * dt) % c.width;
+      // player.x = (player.x + 50 * dt) % c.width;
     }
 
     function draw(time) {
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, c.width, c.height);
-      ctx.fillStyle = "tomato";
-      ctx.fillRect(player.x, player.y, 20, 20);
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.moveTo(player.x, player.y);
+      ctx.lineTo(player.x + 40, player.y - 20);
+      ctx.lineTo(player.x, player.y - 40);
+      ctx.fill();
     }
 
     onresize = () => {
