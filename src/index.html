@@ -8,16 +8,6 @@
     }
   </style>
   <script>
-    /*
-	   	function componentToHex(c) {
-		 		var hex = c.toString(16);
-		 		return hex.length == 1 ? "0" + hex : hex;
-	   	}
-
-	   	function rgbToHex(r, g, b) {
-		 		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-	   	}
-	*/
     function getPixelColor(x, y) {
       const pixel = ctx.getImageData(x, y, 1, 1).data;
       return { r: pixel[0], g: pixel[1], b: pixel[2], a: pixel[3] };
@@ -28,6 +18,7 @@
     let player = { x: 100, y: 100, direction: "d" }; // d = down u = up to save space
     let map = { x: 400 };
     let mouseDown = false;
+    let gameOver = false;
 
     document.addEventListener("mousedown", () => {
       mouseDown = true;
@@ -57,7 +48,7 @@
           pixelAtPlayerCoordOffset1.g == 128 ||
           pixelAtPlayerCoordOffset2.g == 128
         ) {
-          console.log("collision");
+          gameOver = true;
         }
       } else {
         player.y -= 1;
@@ -74,7 +65,7 @@
           pixelAtPlayerCoordOffset1.g == 128 ||
           pixelAtPlayerCoordOffset2.g == 128
         ) {
-          console.log("collision");
+          gameOver = true;
         }
       }
       map.x -= 2;
@@ -84,13 +75,6 @@
       // draw sprite
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, c.width, c.height);
-      // debug: draw red dots
-      /*ctx.fillStyle = "red";
-			 ctx.beginPath();
-			 ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
-			 ctx.fill();
-			 ctx.stroke();*/
-
       ctx.fillStyle = "white";
       ctx.beginPath();
       if (player.direction == "d") {
@@ -108,6 +92,10 @@
       // draw map
       ctx.fillRect(map.x, 0, 200, 200);
       ctx.fillRect(map.x, c.height, 200, 400);
+      if (gameOver) {
+        ctx.font = "48px sans-serif";
+        ctx.fillText("game over", c.width / 2, c.height / 2);
+      }
     }
 
     onresize = () => {
@@ -118,10 +106,17 @@
 
     let last = 0;
     function frame(now) {
-      update(Math.min((now - last) / 1000, 0.1));
-      last = now;
-      draw(now);
-      requestAnimationFrame(frame);
+      if (!gameOver) {
+        last = now;
+        draw(now);
+        requestAnimationFrame(frame);
+        update(Math.min((now - last) / 1000, 0.1));
+      } else {
+        draw(now);
+        document.addEventListener("click", () => {
+          window.location.reload();
+        });
+      }
     }
     requestAnimationFrame(frame);
   </script>
