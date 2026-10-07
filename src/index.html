@@ -8,6 +8,11 @@
     }
   </style>
   <script>
+    onresize = () => {
+      c.width = innerWidth;
+      c.height = innerHeight;
+    };
+    onresize();
     function getPixelColor(x, y) {
       const pixel = ctx.getImageData(x, y, 1, 1).data;
       return { r: pixel[0], g: pixel[1], b: pixel[2], a: pixel[3] };
@@ -15,7 +20,8 @@
     const ctx = c.getContext("2d");
 
     // variables for the entire app
-    let player = { x: 100, y: 100, direction: "d" }; // d = down u = up to save space
+    let player = { x: 100, y: c.height / 2, direction: "d" }; // d = down u = up to save space
+    console.log(c.height);
     let map = { x: 400 };
     let mouseDown = false;
     let gameOver = false;
@@ -94,15 +100,10 @@
       ctx.fillRect(map.x, c.height, 200, 400);
       if (gameOver) {
         ctx.font = "48px sans-serif";
+        ctx.fillStyle = "white";
         ctx.fillText("game over", c.width / 2, c.height / 2);
       }
     }
-
-    onresize = () => {
-      c.width = innerWidth;
-      c.height = innerHeight;
-    };
-    onresize();
 
     let last = 0;
     function frame(now) {
