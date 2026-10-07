@@ -26,6 +26,11 @@
       } else {
         player.direction = "d";
       }
+      if (player.direction == "d") {
+        player.y += 1;
+      } else {
+        player.y -= 1;
+      }
     }
 
     function draw(time) {
