@@ -8,6 +8,20 @@
     }
   </style>
   <script>
+    /*
+	   	function componentToHex(c) {
+		 		var hex = c.toString(16);
+		 		return hex.length == 1 ? "0" + hex : hex;
+	   	}
+
+	   	function rgbToHex(r, g, b) {
+		 		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+	   	}
+	*/
+    function getPixelColor(x, y) {
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      return { r: pixel[0], g: pixel[1], b: pixel[2], a: pixel[3] };
+    }
     const ctx = c.getContext("2d");
 
     // variables for the entire app
@@ -27,10 +41,41 @@
       } else {
         player.direction = "d";
       }
+      let pixelAtPlayerCoord = getPixelColor(player.x, player.y);
       if (player.direction == "d") {
         player.y += 1;
+        let pixelAtPlayerCoordOffset1 = getPixelColor(
+          player.x + 20,
+          player.y - 20,
+        );
+        let pixelAtPlayerCoordOffset2 = getPixelColor(
+          player.x + 40,
+          player.y + 20,
+        );
+        if (
+          pixelAtPlayerCoord.g == 128 ||
+          pixelAtPlayerCoordOffset1.g == 128 ||
+          pixelAtPlayerCoordOffset2.g == 128
+        ) {
+          console.log("collision");
+        }
       } else {
         player.y -= 1;
+        let pixelAtPlayerCoordOffset1 = getPixelColor(
+          player.x - 20,
+          player.y - 20,
+        );
+        let pixelAtPlayerCoordOffset2 = getPixelColor(
+          player.x + 20,
+          player.y - 40,
+        );
+        if (
+          pixelAtPlayerCoord.g == 128 ||
+          pixelAtPlayerCoordOffset1.g == 128 ||
+          pixelAtPlayerCoordOffset2.g == 128
+        ) {
+          console.log("collision");
+        }
       }
       map.x -= 2;
     }
@@ -41,10 +86,10 @@
       ctx.fillRect(0, 0, c.width, c.height);
       // debug: draw red dots
       /*ctx.fillStyle = "red";
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();*/
+			 ctx.beginPath();
+			 ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
+			 ctx.fill();
+			 ctx.stroke();*/
 
       ctx.fillStyle = "white";
       ctx.beginPath();
@@ -62,6 +107,7 @@
       ctx.fillStyle = "green";
       // draw map
       ctx.fillRect(map.x, 0, 200, 200);
+      ctx.fillRect(map.x, c.height, 200, 400);
     }
 
     onresize = () => {
