@@ -11,21 +11,45 @@
     const ctx = c.getContext("2d");
 
     // variables for the entire app
-    let player = { x: 100, y: 100 };
+    let player = { x: 100, y: 100, direction: "d" }; // d = down u = up to save space
+    let mouseDown = false;
 
+    document.addEventListener("mousedown", () => {
+      mouseDown = true;
+    });
+    document.addEventListener("mouseup", () => {
+      mouseDown = false;
+    });
     function update(dt) {
-      // move 50 pixels every second, and wrap around at the edge
-      // player.x = (player.x + 50 * dt) % c.width;
+      if (mouseDown) {
+        player.direction = "u";
+      } else {
+        player.direction = "d";
+      }
     }
 
     function draw(time) {
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, c.width, c.height);
+      // debug: draw red dots
+      ctx.fillStyle = "red";
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+
       ctx.fillStyle = "white";
       ctx.beginPath();
-      ctx.moveTo(player.x, player.y);
-      ctx.lineTo(player.x + 40, player.y - 20);
-      ctx.lineTo(player.x, player.y - 40);
+      if (player.direction == "d") {
+        ctx.moveTo(player.x, player.y);
+        ctx.lineTo(player.x + 20, player.y - 20);
+        ctx.lineTo(player.x + 40, player.y + 20);
+      } else {
+        ctx.moveTo(player.x, player.y);
+        ctx.lineTo(player.x - 20, player.y - 20);
+        ctx.lineTo(player.x + 20, player.y - 40);
+      }
+
       ctx.fill();
     }
 
