@@ -52,7 +52,8 @@
         if (
           pixelAtPlayerCoord.g == 128 ||
           pixelAtPlayerCoordOffset1.g == 128 ||
-          pixelAtPlayerCoordOffset2.g == 128
+          pixelAtPlayerCoordOffset2.g == 128 ||
+          player.y >= c.height - 20
         ) {
           gameOver = true;
         }
@@ -69,7 +70,8 @@
         if (
           pixelAtPlayerCoord.g == 128 ||
           pixelAtPlayerCoordOffset1.g == 128 ||
-          pixelAtPlayerCoordOffset2.g == 128
+          pixelAtPlayerCoordOffset2.g == 128 ||
+          player.y <= 40
         ) {
           gameOver = true;
         }
