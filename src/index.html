@@ -27,6 +27,12 @@
       999999999
     ).toString();
     let map = { x: 400 };
+    const drawObs = (x, obsNum) => {
+      if (obsNum == "0") {
+        ctx.fillRect(x, 0, 200, 200);
+        ctx.fillRect(x, c.height, 200, 400);
+      }
+    }
     let mouseDown = false;
     let gameOver = false;
 
@@ -102,8 +108,10 @@
       ctx.fill();
       ctx.fillStyle = "green";
       // draw map
-      ctx.fillRect(map.x, 0, 200, 200);
-      ctx.fillRect(map.x, c.height, 200, 400);
+      console.log(seed)
+      for (let i = 0; i < seed.length; i++) {
+        drawObs(map.x + (i * 500), parseInt(seed[i], 10))
+      }
       if (gameOver) {
         ctx.font = "48px sans-serif";
         ctx.fillStyle = "white";
