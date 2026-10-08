@@ -25,10 +25,11 @@
     const seed = Math.floor(
       Math.random() * (100000000 - 999999999) + 999999999,
     ).toString();
-    const obsWidths = [200, 600, 200];
+    const obsWidths = [200, 600, 200, 200, 720];
     let map = { x: 400 };
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
+        // flappy bird style pipes
         ctx.fillRect(x, 0, 200, c.height / 2 - c.height / 7);
         ctx.fillRect(
           x,
@@ -37,14 +38,42 @@
           c.height / 2 - c.height / 5,
         );
       } else if (obsNum == "1") {
+        // wide obstacle at the top
         ctx.fillRect(x, 0, 600, c.height / 1.5);
       } else if (obsNum == "2") {
+        // tall obstacle coming out the bottom
         ctx.fillRect(
           x,
           c.height - (c.height / 2 + c.height / 7),
           200,
           c.height / 2 + c.height / 7,
         );
+      } else if (obsNum == "3") {
+        // tall obstacle coming out the top
+        ctx.fillRect(x, 0, 200, c.height / 2 + c.height / 7);
+      } else if (obsNum == "4") {
+        const spikeCount = 6;
+        const spikeWidth = 80;
+        const gap = 80;
+        const spikeHeight = c.height * 0.6;
+
+        for (let i = 0; i < spikeCount; i++) {
+          const x0 = x + i * (spikeWidth + gap);
+          ctx.beginPath();
+          if (i % 2 === 0) {
+            // spike hanging down from the ceiling
+            ctx.moveTo(x0, 0);
+            ctx.lineTo(x0 + spikeWidth / 2, spikeHeight);
+            ctx.lineTo(x0 + spikeWidth, 0);
+          } else {
+            // spike pointing up from the floor
+            ctx.moveTo(x0, c.height);
+            ctx.lineTo(x0 + spikeWidth / 2, c.height - spikeHeight);
+            ctx.lineTo(x0 + spikeWidth, c.height);
+          }
+          ctx.closePath();
+          ctx.fill();
+        }
       }
     };
     let mouseDown = false;
@@ -64,7 +93,7 @@
       }
       let pixelAtPlayerCoord = getPixelColor(player.x, player.y);
       if (player.direction == "d") {
-        player.y += 2;
+        player.y += 4;
         let pixelAtPlayerCoordOffset1 = getPixelColor(
           player.x + 20,
           player.y - 20,
@@ -82,7 +111,7 @@
           gameOver = true;
         }
       } else {
-        player.y -= 2;
+        player.y -= 4;
         let pixelAtPlayerCoordOffset1 = getPixelColor(
           player.x - 20,
           player.y - 20,
@@ -116,7 +145,7 @@
       } else {
         ctx.moveTo(player.x, player.y);
         ctx.lineTo(player.x - 20, player.y - 20);
-        ctx.lineTo(player.x + 20, player.y - 40);
+        ctx.lineTo(player.x + 15, player.y - 40);
       }
 
       ctx.fill();
