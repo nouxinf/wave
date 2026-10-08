@@ -30,11 +30,11 @@
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
         ctx.fillRect(x, 0, 200, (c.height / 2) - c.height / 7);
-        ctx.fillRect(x, c.height - (c.height / 2 - c.height / 7), 200, c.height / 2 - c.height / 7);
+        ctx.fillRect(x, c.height - (c.height / 2 - c.height / 7), 200, c.height / 2 - c.height / 5);
       } else if (obsNum == "1") {
         ctx.fillRect(x, 0, 600, (c.height / 1.5));
       } else if (obsNum == "2") {
-        ctx.fillRect(x, c.height - (c.height / 2 - c.height / 7), 200, c.height / 2 - c.height / 7);
+        ctx.fillRect(x, c.height - (c.height / 2 + c.height / 7), 200, c.height / 2 + c.height / 7);
       }
     }
     let mouseDown = false;
@@ -114,7 +114,7 @@
       // draw map
       console.log(seed)
       for (let i = 0; i < seed.length; i++) {
-        drawObs(map.x + (i * 500), parseInt(seed[i], 10))
+        drawObs(map.x + (i * 700), parseInt(seed[i], 10))
       }
       if (gameOver) {
         ctx.font = "48px sans-serif";
