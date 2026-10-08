@@ -22,15 +22,19 @@
     // variables for the entire app
     let player = { x: 100, y: c.height / 2, direction: "d" }; // d = down u = up to save space
 
-    const seed = (
+    const seed = Math.floor(
       Math.random() * (100000000 - 999999999) +
       999999999
     ).toString();
     let map = { x: 400 };
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
-        ctx.fillRect(x, 0, 200, 200);
-        ctx.fillRect(x, c.height, 200, 400);
+        ctx.fillRect(x, 0, 200, (c.height / 2) - c.height / 7);
+        ctx.fillRect(x, c.height - (c.height / 2 - c.height / 7), 200, c.height / 2 - c.height / 7);
+      } else if (obsNum == "1") {
+        ctx.fillRect(x, 0, 600, (c.height / 1.5));
+      } else if (obsNum == "2") {
+        ctx.fillRect(x, c.height - (c.height / 2 - c.height / 7), 200, c.height / 2 - c.height / 7);
       }
     }
     let mouseDown = false;
@@ -50,7 +54,7 @@
       }
       let pixelAtPlayerCoord = getPixelColor(player.x, player.y);
       if (player.direction == "d") {
-        player.y += 1;
+        player.y += 2;
         let pixelAtPlayerCoordOffset1 = getPixelColor(
           player.x + 20,
           player.y - 20,
@@ -68,7 +72,7 @@
           gameOver = true;
         }
       } else {
-        player.y -= 1;
+        player.y -= 2;
         let pixelAtPlayerCoordOffset1 = getPixelColor(
           player.x - 20,
           player.y - 20,
