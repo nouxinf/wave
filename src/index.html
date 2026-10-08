@@ -23,20 +23,29 @@
     let player = { x: 100, y: c.height / 2, direction: "d" }; // d = down u = up to save space
 
     const seed = Math.floor(
-      Math.random() * (100000000 - 999999999) +
-      999999999
+      Math.random() * (100000000 - 999999999) + 999999999,
     ).toString();
     let map = { x: 400 };
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
-        ctx.fillRect(x, 0, 200, (c.height / 2) - c.height / 7);
-        ctx.fillRect(x, c.height - (c.height / 2 - c.height / 7), 200, c.height / 2 - c.height / 5);
+        ctx.fillRect(x, 0, 200, c.height / 2 - c.height / 7);
+        ctx.fillRect(
+          x,
+          c.height - (c.height / 2 - c.height / 7),
+          200,
+          c.height / 2 - c.height / 5,
+        );
       } else if (obsNum == "1") {
-        ctx.fillRect(x, 0, 600, (c.height / 1.5));
+        ctx.fillRect(x, 0, 600, c.height / 1.5);
       } else if (obsNum == "2") {
-        ctx.fillRect(x, c.height - (c.height / 2 + c.height / 7), 200, c.height / 2 + c.height / 7);
+        ctx.fillRect(
+          x,
+          c.height - (c.height / 2 + c.height / 7),
+          200,
+          c.height / 2 + c.height / 7,
+        );
       }
-    }
+    };
     let mouseDown = false;
     let gameOver = false;
 
@@ -112,9 +121,9 @@
       ctx.fill();
       ctx.fillStyle = "green";
       // draw map
-      console.log(seed)
+      console.log(seed);
       for (let i = 0; i < seed.length; i++) {
-        drawObs(map.x + (i * 700), parseInt(seed[i], 10))
+        drawObs(map.x + i * 700, parseInt(seed[i], 10));
       }
       if (gameOver) {
         ctx.font = "48px sans-serif";
@@ -132,8 +141,8 @@
         update(Math.min((now - last) / 1000, 0.1));
       } else {
         draw(now);
-        document.addEventListener("click", () => {
-          window.location.reload();
+        document.addEventListener("mousedown", () => location.reload(), {
+          once: true,
         });
       }
     }
