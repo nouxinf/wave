@@ -25,7 +25,17 @@
     const seed = Math.floor(
       Math.random() * (100000000 - 999999999) + 999999999,
     ).toString();
-    const obsWidths = [200, 600, 200, 200, 720, 0, 0, 0, 0];
+    const obsWidths = [
+      200,
+      600,
+      200,
+      200,
+      720,
+      100,
+      100 * Math.floor(c.height / 100),
+      0,
+      0,
+    ];
     let map = { x: 400 };
 
     let movingY = c.height / 2;
@@ -79,6 +89,7 @@
           ctx.fill();
         }
       } else if (obsNum == "5") {
+        // circle that moves up and down
         ctx.beginPath();
         ctx.arc(x, movingY, 50, 0, 2 * Math.PI);
         ctx.fill();
@@ -92,6 +103,16 @@
           movingY--;
         } else {
           movingY++;
+        }
+      } else if (obsNum == "6") {
+        const n = Math.floor(c.height / 100);
+
+        for (let i = 0; i < n; i++) {
+          ctx.fillRect(x + i * 100, c.height - i * 100, 100, i * 100);
+        }
+        for (let j = 0; j < n - 1; j++) {
+          const i = n - 1 - j;
+          ctx.fillRect(x + (n - 1 + j) * 100, c.height - i * 100, 100, i * 100);
         }
       }
     };
