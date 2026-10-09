@@ -8,6 +8,7 @@
     }
   </style>
   <script>
+    let started = false;
     onresize = () => {
       c.width = innerWidth;
       c.height = innerHeight;
@@ -156,48 +157,53 @@
     function update(dt) {
       if (mouseDown) {
         player.direction = "u";
+        if (!started) {
+          started = true;
+        }
       } else {
         player.direction = "d";
       }
-      let pixelAtPlayerCoord = getPixelColor(player.x, player.y);
-      if (player.direction == "d") {
-        player.y += 4;
-        let pixelAtPlayerCoordOffset1 = getPixelColor(
-          player.x + 20,
-          player.y - 20,
-        );
-        let pixelAtPlayerCoordOffset2 = getPixelColor(
-          player.x + 40,
-          player.y + 20,
-        );
-        if (
-          pixelAtPlayerCoord.g == 128 ||
-          pixelAtPlayerCoordOffset1.g == 128 ||
-          pixelAtPlayerCoordOffset2.g == 128 ||
-          player.y >= H - 20
-        ) {
-          gameOver = true;
+      if (started) {
+        let pixelAtPlayerCoord = getPixelColor(player.x, player.y);
+        if (player.direction == "d") {
+          player.y += 4;
+          let pixelAtPlayerCoordOffset1 = getPixelColor(
+            player.x + 20,
+            player.y - 20,
+          );
+          let pixelAtPlayerCoordOffset2 = getPixelColor(
+            player.x + 40,
+            player.y + 20,
+          );
+          if (
+            pixelAtPlayerCoord.g == 128 ||
+            pixelAtPlayerCoordOffset1.g == 128 ||
+            pixelAtPlayerCoordOffset2.g == 128 ||
+            player.y >= H - 20
+          ) {
+            gameOver = true;
+          }
+        } else {
+          player.y -= 4;
+          let pixelAtPlayerCoordOffset1 = getPixelColor(
+            player.x - 20,
+            player.y - 20,
+          );
+          let pixelAtPlayerCoordOffset2 = getPixelColor(
+            player.x + 20,
+            player.y - 40,
+          );
+          if (
+            pixelAtPlayerCoord.g == 128 ||
+            pixelAtPlayerCoordOffset1.g == 128 ||
+            pixelAtPlayerCoordOffset2.g == 128 ||
+            player.y <= 40
+          ) {
+            gameOver = true;
+          }
         }
-      } else {
-        player.y -= 4;
-        let pixelAtPlayerCoordOffset1 = getPixelColor(
-          player.x - 20,
-          player.y - 20,
-        );
-        let pixelAtPlayerCoordOffset2 = getPixelColor(
-          player.x + 20,
-          player.y - 40,
-        );
-        if (
-          pixelAtPlayerCoord.g == 128 ||
-          pixelAtPlayerCoordOffset1.g == 128 ||
-          pixelAtPlayerCoordOffset2.g == 128 ||
-          player.y <= 40
-        ) {
-          gameOver = true;
-        }
+        map.x -= 2;
       }
-      map.x -= 2;
     }
 
     function draw(time) {
@@ -222,9 +228,16 @@
       console.log(seed);
       drawMap();
       if (gameOver) {
-        ctx.font = "48px sans-serif";
+        ctx.font = "48px monospace";
         ctx.fillStyle = "white";
         ctx.fillText("game over", W / 2, H / 2);
+      }
+      if (!started) {
+        ctx.font = "48px monospace";
+        ctx.fillStyle = "white";
+        ctx.fillText("Click anywhere to start", W / 2, H / 2);
+        ctx.font = "30px monospace";
+        ctx.fillText("click to go up, let go to go down", W / 2, H / 2 + 50);
       }
     }
 
