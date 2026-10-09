@@ -35,8 +35,9 @@
       200,
       720,
       100,
-      100 * Math.floor(H / 100),
-      0,
+      100 * Math.floor(H / 120),
+      300,
+      100 * Math.floor(H / 120),
       0,
     ];
     let map = { x: 400 };
@@ -109,6 +110,7 @@
           f(x + (n - 1 + j) * 100, H - i * 100, 100, i * 100);
         }
       } else if (obsNum == "7") {
+        // floating diamond shape
         ctx.beginPath();
         ctx.moveTo(x, c.height / 2);
         ctx.lineTo(x + 150, c.height / 2 - c.height * 0.2);
@@ -116,6 +118,17 @@
         ctx.lineTo(x + 150, c.height / 2 + c.height * 0.2);
         ctx.closePath();
         ctx.fill();
+      } else if (obsNum == "8") {
+        // upside down staircase
+        const n = Math.floor(H / 120);
+
+        for (let i = 0; i < n; i++) {
+          f(x + i * 100, 0, 100, i * 100);
+        }
+        for (let j = 0; j < n - 1; j++) {
+          const i = n - 1 - j;
+          f(x + (n - 1 + j) * 100, 0, 100, i * 100);
+        }
       }
     };
     let mouseDown = false;
