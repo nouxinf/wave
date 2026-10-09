@@ -9,18 +9,21 @@
   </style>
   <script>
     onresize = () => {
-      c.w = innerWidth;
-      c.h = innerHeight;
+      c.width = innerWidth;
+      c.height = innerHeight;
     };
     onresize();
+    W = c.width;
+    H = c.height;
     function getPixelColor(x, y) {
       const pixel = ctx.getImageData(x, y, 1, 1).data;
       return { r: pixel[0], g: pixel[1], b: pixel[2], a: pixel[3] };
     }
     const ctx = c.getContext("2d");
+    const f = ctx.fillRect.bind(ctx);
 
     // variables for the entire app
-    let player = { x: 100, y: c.h / 2, direction: "d" }; // d = down u = up to save space
+    let player = { x: 100, y: H / 2, direction: "d" }; // d = down u = up to save space
 
     const seed = Math.floor(
       Math.random() * (100000000 - 999999999) + 999999999,
@@ -32,34 +35,34 @@
       200,
       720,
       100,
-      100 * Math.floor(c.h / 100),
+      100 * Math.floor(H / 100),
       0,
       0,
     ];
     let map = { x: 400 };
 
-    let movingY = c.h / 2;
+    let movingY = H / 2;
     let subtracting = false;
 
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
         // flappy bird style pipes
-        ctx.fillRect(x, 0, 200, c.h / 2 - c.h / 7);
-        ctx.fillRect(x, c.h - (c.h / 2 - c.h / 5), 200, c.h / 2 - c.h / 5);
+        f(x, 0, 200, H / 2 - H / 7);
+        f(x, H - (H / 2 - H / 5), 200, H / 2 - H / 5);
       } else if (obsNum == "1") {
         // wide obstacle at the top
-        ctx.fillRect(x, 0, 600, c.h / 1.5);
+        f(x, 0, 600, H / 1.5);
       } else if (obsNum == "2") {
         // tall obstacle coming out the bottom
-        ctx.fillRect(x, c.h - (c.h / 2 + c.h / 7), 200, c.h / 2 + c.h / 7);
+        f(x, H - (H / 2 + H / 7), 200, H / 2 + H / 7);
       } else if (obsNum == "3") {
         // tall obstacle coming out the top
-        ctx.fillRect(x, 0, 200, c.h / 2 + c.h / 7);
+        f(x, 0, 200, H / 2 + H / 7);
       } else if (obsNum == "4") {
         const spikeCount = 6;
         const spikeWidth = 80;
         const gap = 80;
-        const spikeHeight = c.h * 0.6;
+        const spikeHeight = H * 0.6;
 
         for (let i = 0; i < spikeCount; i++) {
           const x0 = x + i * (spikeWidth + gap);
@@ -71,9 +74,9 @@
             ctx.lineTo(x0 + spikeWidth, 0);
           } else {
             // spike pointing up from the floor
-            ctx.moveTo(x0, c.h);
-            ctx.lineTo(x0 + spikeWidth / 2, c.h - spikeHeight);
-            ctx.lineTo(x0 + spikeWidth, c.h);
+            ctx.moveTo(x0, H);
+            ctx.lineTo(x0 + spikeWidth / 2, H - spikeHeight);
+            ctx.lineTo(x0 + spikeWidth, H);
           }
           ctx.closePath();
           ctx.fill();
@@ -84,7 +87,7 @@
         ctx.arc(x, movingY, 50, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();
-        if (movingY > c.h - 50) {
+        if (movingY > H - 50) {
           subtracting = true;
         } else if (movingY < 50) {
           subtracting = false;
@@ -95,14 +98,14 @@
           movingY++;
         }
       } else if (obsNum == "6") {
-        const n = Math.floor(c.h / 100);
+        const n = Math.floor(H / 100);
 
         for (let i = 0; i < n; i++) {
-          ctx.fillRect(x + i * 100, c.h - i * 100, 100, i * 100);
+          f(x + i * 100, H - i * 100, 100, i * 100);
         }
         for (let j = 0; j < n - 1; j++) {
           const i = n - 1 - j;
-          ctx.fillRect(x + (n - 1 + j) * 100, c.h - i * 100, 100, i * 100);
+          f(x + (n - 1 + j) * 100, H - i * 100, 100, i * 100);
         }
       }
     };
@@ -146,7 +149,7 @@
           pixelAtPlayerCoord.g == 128 ||
           pixelAtPlayerCoordOffset1.g == 128 ||
           pixelAtPlayerCoordOffset2.g == 128 ||
-          player.y >= c.h - 20
+          player.y >= H - 20
         ) {
           gameOver = true;
         }
@@ -175,7 +178,7 @@
     function draw(time) {
       // draw sprite
       ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, c.w, c.h);
+      f(0, 0, W, H);
       ctx.fillStyle = "white";
       ctx.beginPath();
       if (player.direction == "d") {
@@ -196,7 +199,7 @@
       if (gameOver) {
         ctx.font = "48px sans-serif";
         ctx.fillStyle = "white";
-        ctx.fillText("game over", c.w / 2, c.h / 2);
+        ctx.fillText("game over", W / 2, H / 2);
       }
     }
 
