@@ -98,7 +98,8 @@
           movingY++;
         }
       } else if (obsNum == "6") {
-        const n = Math.floor(H / 100);
+        // staircase that goes up then down
+        const n = Math.floor(H / 120);
 
         for (let i = 0; i < n; i++) {
           f(x + i * 100, H - i * 100, 100, i * 100);
@@ -107,6 +108,14 @@
           const i = n - 1 - j;
           f(x + (n - 1 + j) * 100, H - i * 100, 100, i * 100);
         }
+      } else if (obsNum == "7") {
+        ctx.beginPath();
+        ctx.moveTo(x, c.height / 2);
+        ctx.lineTo(x + 150, c.height / 2 - c.height * 0.2);
+        ctx.lineTo(x + 300, c.height / 2);
+        ctx.lineTo(x + 150, c.height / 2 + c.height * 0.2);
+        ctx.closePath();
+        ctx.fill();
       }
     };
     let mouseDown = false;
