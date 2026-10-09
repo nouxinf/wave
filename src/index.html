@@ -27,6 +27,10 @@
     ).toString();
     const obsWidths = [200, 600, 200, 200, 720, 0, 0, 0, 0];
     let map = { x: 400 };
+
+    let movingY = c.height / 2;
+    let subtracting = false;
+
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
         // flappy bird style pipes
@@ -73,6 +77,21 @@
           }
           ctx.closePath();
           ctx.fill();
+        }
+      } else if (obsNum == "5") {
+        ctx.beginPath();
+        ctx.arc(x, movingY, 50, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        if (movingY > c.height - 50) {
+          subtracting = true;
+        } else if (movingY < 50) {
+          subtracting = false;
+        }
+        if (subtracting) {
+          movingY--;
+        } else {
+          movingY++;
         }
       }
     };
