@@ -129,6 +129,9 @@
           const i = n - 1 - j;
           f(x + (n - 1 + j) * 100, 0, 100, i * 100);
         }
+      } else if (obsNum == "9") {
+        // rect in the middle
+        f(x, 0 + H / 4, 200, H / 2);
       }
     };
     let mouseDown = false;
