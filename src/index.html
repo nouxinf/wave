@@ -9,6 +9,50 @@
   </style>
   <script>
     let started = false;
+
+    const aCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(
+      freq = 440,
+      duration = 0.15,
+      type = "sine",
+      volume = 0.2,
+      endFreq = freq,
+      when = 0,
+    ) {
+      const t = aCtx.currentTime + when;
+      const gain = aCtx.createGain();
+      gain.gain.setValueAtTime(volume, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+      let src;
+      if (type === "noise") {
+        // White noise through a low-pass filter. freq is the cutoff.
+        const len = Math.ceil(aCtx.sampleRate * duration);
+        const buf = aCtx.createBuffer(1, len, aCtx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+        src = aCtx.createBufferSource();
+        src.buffer = buf;
+        const lp = aCtx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.setValueAtTime(freq, t);
+        lp.frequency.exponentialRampToValueAtTime(endFreq, t + duration);
+        src.connect(lp).connect(gain);
+      } else {
+        src = aCtx.createOscillator();
+        src.type = type;
+        src.frequency.setValueAtTime(freq, t);
+        src.frequency.exponentialRampToValueAtTime(endFreq, t + duration);
+        src.connect(gain);
+      }
+      gain.connect(aCtx.destination);
+      src.start(t);
+      src.stop(t + duration);
+    }
+    function blip() {
+      beep(4413, 0.13, "noise", 0.5, 6000);
+      beep(2624, 0.13, "noise", 0.5, 3568, 0.135);
+      beep(1560, 0.13, "noise", 0.5, 2121, 0.27);
+    }
     onresize = () => {
       c.width = innerWidth;
       c.height = innerHeight;
@@ -231,6 +275,7 @@
         ctx.font = "48px monospace";
         ctx.fillStyle = "white";
         ctx.fillText("game over", W / 2, H / 2);
+        blip();
       }
       if (!started) {
         ctx.font = "48px monospace";
