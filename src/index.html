@@ -9,8 +9,8 @@
   </style>
   <script>
     onresize = () => {
-      c.width = innerWidth;
-      c.height = innerHeight;
+      c.w = innerWidth;
+      c.h = innerHeight;
     };
     onresize();
     function getPixelColor(x, y) {
@@ -20,7 +20,7 @@
     const ctx = c.getContext("2d");
 
     // variables for the entire app
-    let player = { x: 100, y: c.height / 2, direction: "d" }; // d = down u = up to save space
+    let player = { x: 100, y: c.h / 2, direction: "d" }; // d = down u = up to save space
 
     const seed = Math.floor(
       Math.random() * (100000000 - 999999999) + 999999999,
@@ -32,44 +32,34 @@
       200,
       720,
       100,
-      100 * Math.floor(c.height / 100),
+      100 * Math.floor(c.h / 100),
       0,
       0,
     ];
     let map = { x: 400 };
 
-    let movingY = c.height / 2;
+    let movingY = c.h / 2;
     let subtracting = false;
 
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
         // flappy bird style pipes
-        ctx.fillRect(x, 0, 200, c.height / 2 - c.height / 7);
-        ctx.fillRect(
-          x,
-          c.height - (c.height / 2 - c.height / 5),
-          200,
-          c.height / 2 - c.height / 5,
-        );
+        ctx.fillRect(x, 0, 200, c.h / 2 - c.h / 7);
+        ctx.fillRect(x, c.h - (c.h / 2 - c.h / 5), 200, c.h / 2 - c.h / 5);
       } else if (obsNum == "1") {
         // wide obstacle at the top
-        ctx.fillRect(x, 0, 600, c.height / 1.5);
+        ctx.fillRect(x, 0, 600, c.h / 1.5);
       } else if (obsNum == "2") {
         // tall obstacle coming out the bottom
-        ctx.fillRect(
-          x,
-          c.height - (c.height / 2 + c.height / 7),
-          200,
-          c.height / 2 + c.height / 7,
-        );
+        ctx.fillRect(x, c.h - (c.h / 2 + c.h / 7), 200, c.h / 2 + c.h / 7);
       } else if (obsNum == "3") {
         // tall obstacle coming out the top
-        ctx.fillRect(x, 0, 200, c.height / 2 + c.height / 7);
+        ctx.fillRect(x, 0, 200, c.h / 2 + c.h / 7);
       } else if (obsNum == "4") {
         const spikeCount = 6;
         const spikeWidth = 80;
         const gap = 80;
-        const spikeHeight = c.height * 0.6;
+        const spikeHeight = c.h * 0.6;
 
         for (let i = 0; i < spikeCount; i++) {
           const x0 = x + i * (spikeWidth + gap);
@@ -81,9 +71,9 @@
             ctx.lineTo(x0 + spikeWidth, 0);
           } else {
             // spike pointing up from the floor
-            ctx.moveTo(x0, c.height);
-            ctx.lineTo(x0 + spikeWidth / 2, c.height - spikeHeight);
-            ctx.lineTo(x0 + spikeWidth, c.height);
+            ctx.moveTo(x0, c.h);
+            ctx.lineTo(x0 + spikeWidth / 2, c.h - spikeHeight);
+            ctx.lineTo(x0 + spikeWidth, c.h);
           }
           ctx.closePath();
           ctx.fill();
@@ -94,7 +84,7 @@
         ctx.arc(x, movingY, 50, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();
-        if (movingY > c.height - 50) {
+        if (movingY > c.h - 50) {
           subtracting = true;
         } else if (movingY < 50) {
           subtracting = false;
@@ -105,14 +95,14 @@
           movingY++;
         }
       } else if (obsNum == "6") {
-        const n = Math.floor(c.height / 100);
+        const n = Math.floor(c.h / 100);
 
         for (let i = 0; i < n; i++) {
-          ctx.fillRect(x + i * 100, c.height - i * 100, 100, i * 100);
+          ctx.fillRect(x + i * 100, c.h - i * 100, 100, i * 100);
         }
         for (let j = 0; j < n - 1; j++) {
           const i = n - 1 - j;
-          ctx.fillRect(x + (n - 1 + j) * 100, c.height - i * 100, 100, i * 100);
+          ctx.fillRect(x + (n - 1 + j) * 100, c.h - i * 100, 100, i * 100);
         }
       }
     };
@@ -156,7 +146,7 @@
           pixelAtPlayerCoord.g == 128 ||
           pixelAtPlayerCoordOffset1.g == 128 ||
           pixelAtPlayerCoordOffset2.g == 128 ||
-          player.y >= c.height - 20
+          player.y >= c.h - 20
         ) {
           gameOver = true;
         }
@@ -185,7 +175,7 @@
     function draw(time) {
       // draw sprite
       ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.fillRect(0, 0, c.w, c.h);
       ctx.fillStyle = "white";
       ctx.beginPath();
       if (player.direction == "d") {
@@ -206,7 +196,7 @@
       if (gameOver) {
         ctx.font = "48px sans-serif";
         ctx.fillStyle = "white";
-        ctx.fillText("game over", c.width / 2, c.height / 2);
+        ctx.fillText("game over", c.w / 2, c.h / 2);
       }
     }
 
