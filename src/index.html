@@ -25,7 +25,7 @@
     const seed = Math.floor(
       Math.random() * (100000000 - 999999999) + 999999999,
     ).toString();
-    const obsWidths = [200, 600, 200, 200, 720];
+    const obsWidths = [200, 600, 200, 200, 720, 0, 0, 0, 0];
     let map = { x: 400 };
     const drawObs = (x, obsNum) => {
       if (obsNum == "0") {
@@ -33,7 +33,7 @@
         ctx.fillRect(x, 0, 200, c.height / 2 - c.height / 7);
         ctx.fillRect(
           x,
-          c.height - (c.height / 2 - c.height / 7),
+          c.height - (c.height / 2 - c.height / 5),
           200,
           c.height / 2 - c.height / 5,
         );
@@ -85,6 +85,16 @@
     document.addEventListener("mouseup", () => {
       mouseDown = false;
     });
+
+    function drawMap() {
+      let x = map.x;
+      for (let i = 0; i < seed.length; i++) {
+        const type = parseInt(seed[i], 10);
+        drawObs(x, type);
+        x += (obsWidths[type] ?? 200) + 500;
+      }
+    }
+
     function update(dt) {
       if (mouseDown) {
         player.direction = "u";
@@ -152,9 +162,7 @@
       ctx.fillStyle = "green";
       // draw map
       console.log(seed);
-      for (let i = 0; i < seed.length; i++) {
-        drawObs(map.x + i * (500 + obsWidths[i]), parseInt(seed[i], 10));
-      }
+      drawMap();
       if (gameOver) {
         ctx.font = "48px sans-serif";
         ctx.fillStyle = "white";
