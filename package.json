@@ -20,5 +20,8 @@
   "homepage": "https://github.com/nouxinf/wave#readme",
   "devDependencies": {
     "terser": "^5.51.2"
+  },
+  "dependencies": {
+    "roadroller": "^2.1.0"
   }
 }
