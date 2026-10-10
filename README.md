@@ -2,6 +2,9 @@
 
 _wave_ is a super tiny js canvas game inspired by Geometry Dash wave segments. You click to go up and let go to go down, and you need to fit through randomly generated obstacles!
 
+![screenshot of the game at the beginning](img/screenshot.png)
+![game over screen](img/screenshot2.png)
+
 ## how to use it
 
 Just copy the text in [dist/uri.txt](https://raw.githubusercontent.com/nouxinf/wave/refs/heads/main/dist/uri.txt) into your address bar and you're good to go! That code you see is the entire game, no internet is needed.

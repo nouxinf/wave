@@ -283,10 +283,14 @@
           ctx.fillText("new high score!", W - 200, 100);
         }
         ctx.font = "48px monospace";
-        ctx.fillText(((map.x - 400) * -1).toString(), W - 200, 50);
+        ctx.fillText(
+          `HIGH SCORE: ${((map.x - 400) * -1).toString()}`,
+          W - 500,
+          50,
+        );
       } else {
         ctx.fillStyle = "white";
-        ctx.fillText(hscore.toString(), W - 100, 50);
+        ctx.fillText(`HIGH SCORE: ${hscore.toString()}`, W - 300, 50);
       }
       if (!started) {
         ctx.textAlign = "center";
