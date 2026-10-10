@@ -65,15 +65,19 @@
       const pixel = ctx.getImageData(x, y, 1, 1).data;
       return { r: pixel[0], g: pixel[1], b: pixel[2], a: pixel[3] };
     }
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext("2d", { willReadFrequently: true });
     const f = ctx.fillRect.bind(ctx);
 
     // variables for the entire app
     let player = { x: 100, y: H / 2, direction: "d" }; // d = down u = up to save space
+    let seed = "";
+    for (let i = 0; i < 500; i++) {
+      let seedSegment = Math.floor(
+        Math.random() * (100000000 - 999999999) + 999999999,
+      ).toString();
+      seed = seed.concat(seedSegment);
+    }
 
-    const seed = Math.floor(
-      Math.random() * (100000000 - 999999999) + 999999999,
-    ).toString();
     const obsWidths = [
       200,
       600,
@@ -133,17 +137,6 @@
         ctx.beginPath();
         ctx.arc(x, movingY, 50, 0, 2 * Math.PI);
         ctx.fill();
-        ctx.stroke();
-        if (movingY > H - 50) {
-          subtracting = true;
-        } else if (movingY < 50) {
-          subtracting = false;
-        }
-        if (subtracting) {
-          movingY--;
-        } else {
-          movingY++;
-        }
       } else if (obsNum == "6") {
         // staircase that goes up then down
         const n = Math.floor(H / 120);
@@ -209,6 +202,9 @@
         player.direction = "d";
       }
       if (started) {
+        movingY += subtracting ? -1 : 1;
+        if (movingY > H - 50) subtracting = true;
+        else if (movingY < 50) subtracting = false;
         let pixelAtPlayerCoord = getPixelColor(player.x, player.y);
         if (player.direction == "d") {
           player.y += 4;
@@ -270,24 +266,29 @@
       ctx.fill();
       ctx.fillStyle = "green";
       // draw map
-      console.log(seed);
+      //console.log(seed);
       drawMap();
       if (gameOver) {
         ctx.font = "48px monospace";
         ctx.fillStyle = "white";
-        ctx.fillText("game over", W / 2, H / 2);
+        ctx.textAlign = "center";
+        ctx.fillText("Game Over!", W / 2, H / 2);
         blip();
+        ctx.textAlign = "left";
         if ((map.x - 400) * -1 > hscore) {
           location.hash = (map.x - 400) * -1;
           ctx.font = "20px monospace";
           ctx.fillText("new high score!", W - 200, 100);
+          ctx.font = "48px monospace";
+          ctx.fillText(
+            `HIGH SCORE: ${((map.x - 400) * -1).toString()}`,
+            W - 500,
+            50,
+          );
+        } else {
+          ctx.font = "48px monospace";
+          ctx.fillText(`HIGH SCORE: ${hscore}`, W - 500, 50);
         }
-        ctx.font = "48px monospace";
-        ctx.fillText(
-          `HIGH SCORE: ${((map.x - 400) * -1).toString()}`,
-          W - 500,
-          50,
-        );
       } else {
         ctx.fillStyle = "white";
         ctx.fillText(`HIGH SCORE: ${hscore.toString()}`, W - 300, 50);
