@@ -9,6 +9,7 @@
   </style>
   <script>
     let started = false;
+    let hscore = +location.hash.slice(1) || 0;
 
     const aCtx = new (window.AudioContext || window.webkitAudioContext)();
     function beep(
@@ -276,6 +277,16 @@
         ctx.fillStyle = "white";
         ctx.fillText("game over", W / 2, H / 2);
         blip();
+        if ((map.x - 400) * -1 > hscore) {
+          location.hash = (map.x - 400) * -1;
+          ctx.font = "20px monospace";
+          ctx.fillText("new high score!", W - 200, 100);
+        }
+        ctx.font = "48px monospace";
+        ctx.fillText(((map.x - 400) * -1).toString(), W - 200, 50);
+      } else {
+        ctx.fillStyle = "white";
+        ctx.fillText(hscore.toString(), W - 100, 50);
       }
       if (!started) {
         ctx.textAlign = "center";
@@ -286,10 +297,6 @@
         ctx.fillText("click to go up, let go to go down", W / 2, H / 2 + 50);
       }
       // score text
-      let count = 0;
-      for (let i = 0; i < seed.length; i++) {
-        count = count + obsWidths[parseInt(seed[i])] + 500;
-      }
       ctx.fillStyle = "white";
       ctx.textAlign = "left";
       ctx.fillText(((map.x - 400) * -1).toString(), 50, 50);
