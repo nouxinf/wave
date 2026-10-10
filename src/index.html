@@ -285,6 +285,14 @@
         ctx.font = "30px monospace";
         ctx.fillText("click to go up, let go to go down", W / 2, H / 2 + 50);
       }
+      // score text
+      let count = 0;
+      for (let i = 0; i < seed.length; i++) {
+        count = count + obsWidths[parseInt(seed[i])] + 500;
+      }
+      ctx.fillStyle = "white";
+      ctx.textAlign = "left";
+      ctx.fillText(((map.x - 400) * -1).toString(), 50, 50);
     }
 
     let last = 0;
